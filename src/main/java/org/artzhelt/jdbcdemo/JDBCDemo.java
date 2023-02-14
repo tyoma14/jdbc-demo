@@ -21,6 +21,8 @@ public class JDBCDemo {
             jdbcDemo.createSchema();
             jdbcDemo.insertData();
             jdbcDemo.showData();
+            jdbcDemo.updatePositionById(1, "lead developer");
+            jdbcDemo.showData();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,6 +54,15 @@ public class JDBCDemo {
                 int salary = rs.getInt("salary");
                 System.out.format("name: %s, position: %s, salary: %d\n", name, position, salary);
             }
+        }
+    }
+
+    public int updatePositionById(int id, String position) throws SQLException {
+        String updateSql = "UPDATE employees SET position=?1 WHERE emp_id=?2";
+        try (PreparedStatement prStmt = connection.prepareStatement(updateSql)){
+            prStmt.setString(1, position);
+            prStmt.setInt(2, id);
+            return prStmt.executeUpdate();
         }
     }
 
